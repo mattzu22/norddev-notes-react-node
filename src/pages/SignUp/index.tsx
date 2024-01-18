@@ -1,22 +1,28 @@
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
 
-import { Link } from "react-router-dom";
-
 import { Container, Form, Background } from "./styles";
 
-import { FiMail, FiLock } from "react-icons/fi";
+import { FiLogIn, FiMail, FiLock, FiUser } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
 
-export function SignIn() {
+export function SignUp() {
   return (
     <Container>
+       <Background />
+
         <Form>
             <h1>NordDev Notes</h1>
             <p>Aplicações para salvar e gerenciar seus links úteis</p>
 
-            <h2>Faça seu login</h2>
+            <h2>Crie sua conta</h2>
 
+            <Input 
+                placeholder="Nome"
+                type="text"
+                icon={FiUser}  
+            />
             <Input 
                 placeholder="E-mail"
                 type="text"
@@ -28,15 +34,13 @@ export function SignIn() {
                 icon={FiLock}  
             />
             
-           <Button text="Entrar" type="button" />
+           <Button text="Cadastrar" type="button" />
 
-           <Link to="/register">
-              Criar conta
+           <Link to="/">
+            Voltar para o login
            </Link>
            
         </Form>
-        
-        <Background />
     </Container>
   )
 }

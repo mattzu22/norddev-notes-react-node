@@ -1,8 +1,8 @@
-import { Signin } from "./pages/Signin"
+import { Routes } from "./routes"
 
 export function App() {
   return (
-    <Signin />
+    <Routes />
   )
 }
 
