@@ -1,8 +1,8 @@
-import { Home } from "./pages/Home"
+import { Signin } from "./pages/Signin"
 
 export function App() {
   return (
-    <Home />
+    <Signin />
   )
 }
 
