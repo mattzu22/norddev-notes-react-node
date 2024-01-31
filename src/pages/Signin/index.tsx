@@ -4,22 +4,38 @@ import { Button } from "../../components/Button";
 import { Link } from "react-router-dom";
 
 import { useAuth } from "../../hooks/auth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Container, Form, Background } from "./styles";
 
 import { FiMail, FiLock } from "react-icons/fi";
+import { api } from "../../services/api";
 
 
 export function SignIn() {
   const [ email, setEmail ] = useState("");
   const [ password, setPassword ] = useState("");
+  const [data, setData] = useState({});
 
   const { signIn } = useAuth();
 
   function handleSignIn(){
     signIn({email, password})
   }
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
+    
+    if (token && user) {
+      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+      setData({
+        token,
+        user: JSON.parse(user),
+      });
+    }
+  }, []);
   
   return (
     <Container>

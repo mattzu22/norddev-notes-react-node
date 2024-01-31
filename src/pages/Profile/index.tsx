@@ -1,13 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { FiArrowLeft, FiUser, FiMail, FiLock, FiCamera } from "react-icons/fi";
 import { Container, Form, Avatar } from "./styles";
 
 import { useAuth } from "../../hooks/auth";
 
+import { api } from "../../services/api";
+
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
 import { Link } from "react-router-dom";
+
+import avatarPreview from "../../assets/avatar.png"
 
 
 export function Profile() {
@@ -15,9 +19,12 @@ export function Profile() {
 
     const [name, setName] = useState(user.name);
     const [email,setEmail] = useState(user.email);
-    const [passwordOld,setPasswordOld] = useState();
-    const [passwordNew,setPasswordNew] = useState();
-    const [avatar,setAvatar] = useState(user.avatar);
+    const [passwordOld,setPasswordOld] = useState("");
+    const [passwordNew,setPasswordNew] = useState("");
+
+    const avatarUrl = user.avatar ? `${api.defaults.baseURL}/files/${user.avatar}` : avatarPreview
+
+    const [avatar,setAvatar] = useState(avatarUrl);
     const [avatarFile,setAvatarFile] = useState(null);
 
     async function handleUpdate(){
@@ -33,13 +40,9 @@ export function Profile() {
 
     function handleChangeAvatar(event){
         const file = event.target.files[0];
-        console.log(file);
-        
         setAvatarFile(file)
 
         const imagePreview = URL.createObjectURL(file);
-        console.log(imagePreview);
-        
         setAvatar(imagePreview)
     }
 

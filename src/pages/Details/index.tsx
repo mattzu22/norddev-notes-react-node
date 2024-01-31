@@ -3,44 +3,84 @@ import { Button } from "../../components/Button";
 import { Header } from "../../components/Header";
 import { Section } from "../../components/Section";
 
+import { useNavigate, useParams } from "react-router-dom";
+
 import { Tags } from "../../components/Tags";
 
 import { ButtonText } from "../../components/ButtonText";
+import { useEffect, useState } from "react";
+import { api } from "../../services/api";
 
 export function Details() {
+  const [note, setNote] = useState(null);
+
+  const parms = useParams();
+
+  const navigate = useNavigate();
+
+  function handleBack(){
+      navigate("/")
+  }
+
+  useEffect(() => {
+    async function fetchNote() {
+      const note = await api.get(`/notes/${parms.id}`);
+
+      setNote(note.data);
+    }
+
+    fetchNote();
+  }, []);
+
   return (
     <Container>
       <Header />
+      {note && (
+        <main>
+          <Content>
+            <ButtonText title="Excluir nota" />
 
-      <main>
-        <Content>
-          <ButtonText title="Excluir nota" />
+            <h1>{note.title}</h1>
 
-          <h1>
-            Introdução ao react
-          </h1>
+            <p>{note.description}</p>
 
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestias libero natus, ratione, temporibus fuga saepe dolor distinctio voluptatibus eligendi excepturi commodi deleniti unde? Nemo doloremque nam, voluptates repellat voluptatibus ducimus!
-          </p>
+          {note.links &&
+            <Section title="Links úteis">
+              <Links>
+                {
+                  note.links.map((link) => {
+                    return (
+                      <li key={String(link.id)}>
+                        <a href={link.url} target="_blank">
+                          {link.url}
+                        </a>
+                      </li>
+                    );
+                  })}
+              </Links>
+            </Section>
+          }
 
-          <Section title="Links úteis">
-            <Links>
-              <li>item1</li>
-              <li>item2</li>
-              <li>item3</li>
-            </Links>
-          </Section>
+          { 
+            note.tags &&
+            <Section title="Marcadores">
+              {
+                note.tags.map(tag =>{
+                  return(
+                    <Tags key={String(tag.id)} title={tag.name} />
+                  )
+                })
+              }
+            </Section>
+          }
 
-          <Section title="Marcadores">
-            <Tags title="express" />
-            <Tags title="node" />
-            <Tags title="react" />
-          </Section>
-
-          <Button text="Voltar" loading />
-        </Content>
-      </main>
+            <Button 
+              text="Voltar"  
+              onClick={handleBack}
+            />
+          </Content>
+        </main>
+      )}
     </Container>
   );
 }
