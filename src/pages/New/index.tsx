@@ -8,40 +8,37 @@ import { TextArea } from "../../components/TextArea";
 import { NotesItem } from "../../components/Notesitem";
 import { Section } from "../../components/Section";
 import { Button } from "../../components/Button";
-import { Link } from "react-router-dom";
+
 import { useState } from "react";
 
 import { api } from "../../services/api";
-
-
-
-
-
-
-
-
-
+import { ButtonText } from "../../components/ButtonText";
 
 
 
 export function New() {
   const [ title, setTitle] = useState("");
+
   const [ description, setDescription] = useState("");
 
-  const [ links, setLinks ] = useState([]);
+  const [ links, setLinks ] = useState<string[]>([]);
   const [ newLink, setNewLink ] = useState("");
 
-  const [ tags, setTags ] = useState([]);
+  const [ tags, setTags ] = useState<string[]>([]);
   const [ newTag, setNewTag ] = useState("");
 
   const navegation = useNavigate();
+
+  function handleBack(){
+    navegation(-1)
+}
 
   function handleAddTag(){
     setTags(prevState=> [...prevState, newTag]);
     setNewTag("");
   }  
 
-  function handleRemoveTag(deleted){
+  function handleRemoveTag(deleted: string){
     setTags(prevState=> prevState.filter(tag => tag !== deleted))
   }
 
@@ -50,7 +47,7 @@ export function New() {
     setNewLink("");
   }
 
-  function handleRemoveLink(deleted){
+  function handleRemoveLink(deleted: string){
     setLinks(prevState=> prevState.filter(link => link !== deleted))
   }
 
@@ -76,7 +73,7 @@ export function New() {
 
     alert("Nota criada com sucesso!");
 
-    navegation("/");
+    navegation(-1);
   }
 
   return (
@@ -87,7 +84,11 @@ export function New() {
         <Form>
           <header>
             <h1>Criar nota</h1>
-            <Link to="/">Voltar</Link>
+  
+            <ButtonText 
+              title="Voltar" 
+              onClick={handleBack}
+            />
           </header>
 
           <Input 
@@ -110,8 +111,7 @@ export function New() {
                   <NotesItem 
                     key={String(index)}
                     value={link}
-                    onClick={() => handleRemoveLink(link)}
-                />
+                    onClick={() => handleRemoveLink(link)}  />
                 )
               })
             }
@@ -132,8 +132,7 @@ export function New() {
                     <NotesItem 
                       key={String(index)}
                       value={tag}
-                      onClick={() => handleRemoveTag(tag)} 
-                  />
+                      onClick={() => handleRemoveTag(tag)} />
                   )
                 })
               }

@@ -3,14 +3,15 @@
 
 
 
-
-
-
-
-
+import { ButtonHTMLAttributes } from "react"
 import { Container } from "./styles"
 
-export function ButtonText({ title, isActive = false, ...rest }) {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>{
+  title: string;
+  isActive?: boolean;
+}
+
+export function ButtonText({ title, isActive = false, ...rest }: ButtonProps) {
   return (
     <Container  
       type="button" 

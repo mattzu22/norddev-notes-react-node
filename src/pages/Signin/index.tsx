@@ -4,38 +4,30 @@ import { Button } from "../../components/Button";
 import { Link } from "react-router-dom";
 
 import { useAuth } from "../../hooks/auth";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Container, Form, Background } from "./styles";
 
 import { FiMail, FiLock } from "react-icons/fi";
-import { api } from "../../services/api";
 
+interface SigninProps {
+  email: string;
+  password: string;
+}
+
+interface SigninInProps {
+  signIn: ({ email, password }: SigninProps) => Promise<void>
+}
 
 export function SignIn() {
   const [ email, setEmail ] = useState("");
   const [ password, setPassword ] = useState("");
-  const [data, setData] = useState({});
 
-  const { signIn } = useAuth();
+  const { signIn } = useAuth() as SigninInProps;
 
   function handleSignIn(){
     signIn({email, password})
   }
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const user = localStorage.getItem("user");
-    
-    if (token && user) {
-      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-      setData({
-        token,
-        user: JSON.parse(user),
-      });
-    }
-  }, []);
   
   return (
     <Container>

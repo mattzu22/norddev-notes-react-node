@@ -6,7 +6,11 @@
 
 import { Container } from "./styles";
 
-export function Tags({title, ...rest}) {
+interface TagsProps{
+  title: string;
+}
+
+export function Tags({title, ...rest}: TagsProps) {
   return(
     <Container {...rest}>
         {title}

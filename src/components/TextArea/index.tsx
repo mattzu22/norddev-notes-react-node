@@ -1,14 +1,10 @@
-
-
-
-
-
-
-
+import { TextareaHTMLAttributes } from "react";
 import { Container } from "./styles";
 
-export function TextArea({ value, ...rest }) {
-  return (
-    <Container {...rest} value={value}/>   
-  )
+interface TextArea extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+  value: string;
+}
+
+export function TextArea({ value, ...rest }: TextArea) {
+  return <Container {...rest} value={value} />;
 }

@@ -13,15 +13,35 @@ import { Note } from "../../components/Note";
 import { ButtonText } from "../../components/ButtonText";
 import { api } from "../../services/api";
 
+interface TagsProps{
+    id: number,
+    name: string
+}
+
+interface Note {
+  id: number,
+  tags: [],
+  title: string,
+  user_id: number,
+}
+
+interface NotesProps{
+    id: number,
+    tags: [],
+    title: string,
+    user_id: number, 
+}
+
 export function Home() {
-  const [tags, setTags] = useState([]);
-  const [tagsSelected, setTagsSelected] = useState([]);
+  const [ tags, setTags ] = useState<TagsProps[]>([]);
+  const [ tagsSelected, setTagsSelected ] = useState<string[]>([]);
   const [ search, setSearch ] = useState("");
-  const [ notes, setNotes ] = useState([]);
+  const [ notes, setNotes ] = useState<NotesProps[]>([]);
+ 
 
   const navigate = useNavigate();
 
-  function handleTagSelected(tagName){
+  function handleTagSelected(tagName: string){
     if (tagName === "all") {
         return setTagsSelected([]);
     }
@@ -39,7 +59,7 @@ export function Home() {
 
   }
 
-  function handleDetails(id) {
+  function handleDetails(id: number) {
       navigate(`/details/${id}`);
   }
 
@@ -105,7 +125,7 @@ export function Home() {
       <Content>
         <Section title="Minhas notas">
           {
-            notes.map(note =>{
+            notes.map((note) =>{
              return(
                <Note
                  key={String(note.id)}

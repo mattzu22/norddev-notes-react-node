@@ -1,6 +1,12 @@
+import { ButtonHTMLAttributes } from "react";
 import { Container } from "./styles"
 
-export function Button({text, loading = false, ...rest}) {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>{
+  text: string;
+  loading?: boolean;
+}
+
+export function Button({text, loading = false, ...rest}: ButtonProps) {
   return (
     <Container
         type="button"

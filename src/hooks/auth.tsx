@@ -2,12 +2,42 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 import { api } from "../services/api";
 
+
 export const AuthContext = createContext({});
 
-export function AuthProvider({ children }) {
-  const [data, setData] = useState({});
+interface AuthProps {
+  children: React.ReactNode;
+}
 
-  async function signIn({ email, password }) {
+interface SigninProps {
+  email: string;
+  password: string;
+}
+
+interface User{
+    avatar: string,
+    create_at: string,
+    email: string,
+    id: number,
+    name:string,
+    password:string,
+    updated_at: string,
+}
+
+interface UpdateProfileProps {
+  user: User;
+  avatarFile?: File;
+}
+interface DataProps {
+  token?: string;
+  user?: User;
+}
+
+export function AuthProvider({ children }: AuthProps) {
+  const [data, setData] = useState<DataProps>();
+
+
+  async function signIn({ email, password }: SigninProps) {
     try {
       const response = await api.post("/sessions", { email, password });
 
@@ -20,7 +50,8 @@ export function AuthProvider({ children }) {
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       setData({ user, token });
-    } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       if (error.response) {
         alert(error.response.data.message);
       } else {
@@ -36,7 +67,7 @@ export function AuthProvider({ children }) {
     setData({});
   }
 
-  async function updateProfile({ user, avatarFile }) {
+  async function updateProfile({ user, avatarFile }: UpdateProfileProps) {
     try {
       if (avatarFile) {
         //formdata = enviar como arquivo
@@ -51,10 +82,11 @@ export function AuthProvider({ children }) {
       //o setItem serve pra adicionar ou substituir um item existente
       localStorage.setItem("user", JSON.stringify(user));
 
-      setData({ user, token: data.token });
+      setData({ user, token: data?.token });
 
       alert("Perfil atualizado com sucesso!");
-    } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       if (error.response) {
         alert(error.response.data.message);
       } else {
@@ -67,7 +99,7 @@ export function AuthProvider({ children }) {
     const token = localStorage.getItem("token");
     const user = localStorage.getItem("user");
     
-    if (token && user) {
+    if (token && user ) {
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       setData({
@@ -79,7 +111,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ signIn, user: data.user, logout, updateProfile }}
+      value={{ signIn, user: data?.user, logout, updateProfile }}
     >
       {children}
     </AuthContext.Provider>
