@@ -10,56 +10,58 @@ import { Container, Form, Background } from "./styles";
 
 import { FiMail, FiLock } from "react-icons/fi";
 
+import { PopUp } from "../../components/PopUp";
+
 interface SigninProps {
   email: string;
   password: string;
 }
 
 interface SigninInProps {
-  signIn: ({ email, password }: SigninProps) => Promise<void>
+  signIn: ({ email, password }: SigninProps) => Promise<void>;
+  message: string;
+  status: number;
 }
 
 export function SignIn() {
-  const [ email, setEmail ] = useState("");
-  const [ password, setPassword ] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const { signIn } = useAuth() as SigninInProps;
+  const { signIn, message, status } = useAuth() as SigninInProps;
 
-  function handleSignIn(){
-    signIn({email, password})
+  async function handleSignIn() {
+    signIn({ email, password });
   }
-  
+
   return (
     <Container>
-        <Form>
-            <h1>NordDev Notes</h1>
-            <p>Aplicações para salvar e gerenciar seus links úteis</p>
+      {message && <PopUp message={message} status={status} />}
 
-            <h2>Faça seu login</h2>
+      <Form>
+        <h1>NordDev Notes</h1>
+        <p>Aplicações para salvar e gerenciar seus links úteis</p>
 
-            <Input 
-                placeholder="E-mail"
-                type="text"
-                icon={FiMail}
-                onChange={e => setEmail(e.target.value)}  
-            />
-            <Input 
-                placeholder="Senha"
-                type="password"
-                icon={FiLock} 
-                onChange={e => setPassword(e.target.value)}   
-            />
-            
-           <Button text="Entrar" type="button" onClick={handleSignIn} />
+        <h2>Faça seu login</h2>
 
-           <Link to="/register">
-              Criar conta
-           </Link>
-           
-        </Form>
-        
-        <Background />
+        <Input
+          placeholder="E-mail"
+          type="text"
+          icon={FiMail}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <Input
+          placeholder="Senha"
+          type="password"
+          icon={FiLock}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <Button text="Entrar" type="button" onClick={handleSignIn} />
+
+        <Link to="/register">Criar conta</Link>
+      </Form>
+
+      <Background />
     </Container>
-  )
+  );
 }
-

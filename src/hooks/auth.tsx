@@ -13,7 +13,6 @@ interface SigninProps {
   email: string;
   password: string;
 }
-
 interface User{
     avatar: string,
     create_at: string,
@@ -35,6 +34,11 @@ interface DataProps {
 
 export function AuthProvider({ children }: AuthProps) {
   const [data, setData] = useState<DataProps>();
+  const [ message , setMessage] = useState("");
+  const [ status , setStatus] = useState(0);
+
+  console.log(status);
+  
 
 
   async function signIn({ email, password }: SigninProps) {
@@ -49,13 +53,14 @@ export function AuthProvider({ children }: AuthProps) {
       //esta sendo inserido um token de autorização no cabeçalho por padrão em todas as requisições
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-      setData({ user, token });
+      setData({ user, token })
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.response) {
-        alert(error.response.data.message);
+        setMessage(error.response.data.message)
+        setStatus(error.response.status);
       } else {
-        alert("Não foi possível entrar!");
+        setMessage("Não foi possível entrar!");
       }
     }
   }
@@ -83,14 +88,14 @@ export function AuthProvider({ children }: AuthProps) {
       localStorage.setItem("user", JSON.stringify(user));
 
       setData({ user, token: data?.token });
-
+    
       alert("Perfil atualizado com sucesso!");
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.response) {
         alert(error.response.data.message);
       } else {
-        alert("Não foi possível atualizar os dados!");
+        alert("Não foi possível atualizar os dados!")
       }
     }
   }
@@ -109,9 +114,17 @@ export function AuthProvider({ children }: AuthProps) {
     }
   }, []);
 
+  useEffect(() => {
+    const clearMessageTimeOut = setTimeout(() =>{
+      setMessage("")
+    }, 3000)
+
+    return () => clearTimeout(clearMessageTimeOut)
+  }, [message])
+
   return (
     <AuthContext.Provider
-      value={{ signIn, user: data?.user, logout, updateProfile }}
+      value={{ signIn, user: data?.user, logout, updateProfile, message, status }}
     >
       {children}
     </AuthContext.Provider>
