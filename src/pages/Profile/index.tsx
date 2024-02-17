@@ -12,6 +12,7 @@ import { Button } from "../../components/Button";
 import { useNavigate } from "react-router-dom";
 
 import avatarPreview from "../../assets/avatar.png";
+import { PopUp } from "../../components/PopUp";
 
 interface User{
     avatar: string,
@@ -31,22 +32,24 @@ interface UpdateProfileProps {
 interface UseAuthProps {
   user: User;
   updateProfile: ({ user, avatarFile }: UpdateProfileProps) => Promise<void>;
+  message: string;
+  status: number;
 }
 
 export function Profile() {
-  const { user, updateProfile } = useAuth() as UseAuthProps;
+  const { user, updateProfile, message, status } = useAuth() as UseAuthProps;
 
   const [name, setName] = useState<string>(user.name);
   const [email, setEmail] = useState<string>(user.email);
   const [passwordOld, setPasswordOld] = useState("");
   const [passwordNew, setPasswordNew] = useState("");
-
-  const avatarUrl = user.avatar
-    ? `${api.defaults.baseURL}/files/${user.avatar}`
+  
+  const avatarUrl = user.avatar ? `${api.defaults.baseURL}/files/${user.avatar}`
     : avatarPreview;
-
+    
   const [avatar, setAvatar] = useState(avatarUrl);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  
   
   const navegation = useNavigate();
 
@@ -64,19 +67,24 @@ export function Profile() {
 
     const userUpdated = Object.assign(user, updated);
 
+
     await updateProfile({ user: userUpdated, avatarFile });
   }
 
   function handleChangeAvatar(event: React.ChangeEvent<HTMLInputElement>) {
-    const file: File = event.target.files![0];
-    setAvatarFile(file);
+    const file = event.target.files![0];
+    setAvatarFile(file)
 
-    const imagePreview = URL.createObjectURL(file);
-    setAvatar(imagePreview);
+    const imagePreview = URL.createObjectURL(file)
+    setAvatar(imagePreview)
   }
 
   return (
     <Container>
+      {
+        message && <PopUp message={message} status={status}/> 
+      }
+
       <header>
         <button type="button" onClick={handleBack}>
           <FiArrowLeft />

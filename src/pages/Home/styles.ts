@@ -39,7 +39,17 @@ import styled from "styled-components";
         text-align: center;
 
         >li{
-            margin-bottom: 24px;
+            margin-bottom: 14px;
+            border-bottom: 0.5px solid ${({theme}) => theme.COLORS.GRAY_300};
+            border-top: 0.5px solid ${({theme}) => theme.COLORS.GRAY_300};
+            border-radius: 3PX;
+            padding: 15PX;
+            transition: 0.2s ease-in-out;
+
+            &:hover{
+                background-color: ${({theme}) => theme.COLORS.GRAY_300};
+                cursor: pointer;
+            }
         }
     `
     export const Search = styled.div`

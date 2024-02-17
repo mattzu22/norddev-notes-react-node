@@ -33,14 +33,10 @@ interface DataProps {
 }
 
 export function AuthProvider({ children }: AuthProps) {
-  const [data, setData] = useState<DataProps>();
+  const [data, setData] = useState<DataProps>({});
   const [ message , setMessage] = useState("");
   const [ status , setStatus] = useState(0);
-
-  console.log(status);
   
-
-
   async function signIn({ email, password }: SigninProps) {
     try {
       const response = await api.post("/sessions", { email, password });
@@ -48,7 +44,7 @@ export function AuthProvider({ children }: AuthProps) {
       const { user, token } = response.data;
 
       localStorage.setItem("user", JSON.stringify(user));
-      localStorage.setItem("token", JSON.stringify(token));
+      localStorage.setItem("token", token);
 
       //esta sendo inserido um token de autorização no cabeçalho por padrão em todas as requisições
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -78,24 +74,27 @@ export function AuthProvider({ children }: AuthProps) {
         //formdata = enviar como arquivo
         const fileUploadForm = new FormData();
         fileUploadForm.append("avatar", avatarFile);
-
+        
         const response = await api.patch("/users/avatar", fileUploadForm);
+        
         user.avatar = response.data.avatar;
       }
 
       await api.put("/users", user);
+
       //o setItem serve pra adicionar ou substituir um item existente
       localStorage.setItem("user", JSON.stringify(user));
 
       setData({ user, token: data?.token });
     
-      alert("Perfil atualizado com sucesso!");
+      setMessage("Perfil atualizado com sucesso!");
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.response) {
-        alert(error.response.data.message);
+        setMessage(error.response.data.message);
+        setStatus(error.response.status);
       } else {
-        alert("Não foi possível atualizar os dados!")
+        setMessage("Não foi possível atualizar os dados!")
       }
     }
   }

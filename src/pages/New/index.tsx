@@ -9,15 +9,16 @@ import { NotesItem } from "../../components/Notesitem";
 import { Section } from "../../components/Section";
 import { Button } from "../../components/Button";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { api } from "../../services/api";
 import { ButtonText } from "../../components/ButtonText";
-
-
+import { PopUp } from "../../components/PopUp";
 
 export function New() {
   const [ title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
+  const [status, setStatus] = useState(0);
 
   const [ description, setDescription] = useState("");
 
@@ -52,16 +53,22 @@ export function New() {
   }
 
   async function handleNewNote(){
-    if (!title) {
-      return alert("Você deixou o campo de titulo vazio.")
+    if(!title) {
+      setMessage("Você deixou o campo de titulo vazio.")
+      setStatus(400)
+      return 
     }
 
     if (newTag) {
-      return alert("Você deixou uma tag no campo para adicionar, mas não clicou para adicionar. Clique no campo para adicionar ou deixe o campo vazio.")
+      setMessage("Você deixou uma tag no campo para adicionar.")
+      setStatus(400)
+      return 
     }
 
     if (newLink) {
-      return alert("Você deixou um link no campo para adicionar, mas não clicou para adicionar. Clique no campo para adicionar ou deixe o campo vazio.")
+      setMessage("Você deixou um link no campo para adicionar.")
+      setStatus(400)
+      return 
     }
 
     await api.post("/notes", {
@@ -71,13 +78,26 @@ export function New() {
       links,
     });
 
-    alert("Nota criada com sucesso!");
+    setMessage("Nota criada com sucesso!");
 
     navegation(-1);
   }
 
+  useEffect(() =>{
+      const clearMessageTimeOut = setTimeout(() => {
+        setMessage("")
+      }, 3000);
+
+      return () => clearTimeout(clearMessageTimeOut)
+  }, [message])
+
   return (
     <Container>
+
+      {
+        message && <PopUp message={message} status={status}/>
+      }
+
       <Header />
 
       <main>
