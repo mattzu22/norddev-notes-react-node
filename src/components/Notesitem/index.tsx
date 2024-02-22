@@ -4,27 +4,27 @@ import { Container } from "./styles";
 import { FiPlus, FiX } from "react-icons/fi"
 
 interface NotesProps extends InputHTMLAttributes<HTMLInputElement>{
-  isNew?: boolean;
+  isnew?: boolean;
   value: string;
   onClick: () => void;
 }
 
-export function NotesItem({ isNew = false, value, onClick, ...rest }: NotesProps) {
+export function NotesItem({ isnew = false, value, onClick, ...rest }: NotesProps) {
   return (
-    <Container isNew={isNew}>
+    <Container isnew={isnew}>
         <input 
             type="text" 
             value={value}
-            readOnly={!isNew}
+            readOnly={!isnew}
             {...rest}
         />
 
         <button 
           onClick={onClick} 
           type="button"
-          className={isNew ? 'button-add' : 'button-delete'}
+          className={isnew ? 'button-add' : 'button-delete'}
         > 
-            { isNew ? <FiPlus /> : <FiX />}
+            { isnew ? <FiPlus /> : <FiX />}
         </button>
     </Container>
   )

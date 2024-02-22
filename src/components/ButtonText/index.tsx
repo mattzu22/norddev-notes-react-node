@@ -12,10 +12,11 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>{
 }
 
 export function ButtonText({ title, isactive = false, ...rest }: ButtonProps) {
+  
   return (
-    <Container  
+    <Container 
       type="button" 
-      isactive={isactive ? 1 : 0}
+      isactive={isactive.toString()}
       {...rest} 
     >
         {title}
