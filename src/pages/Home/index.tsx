@@ -94,7 +94,7 @@ export function Home() {
         <li>
           <ButtonText 
             title="todos"
-            isActive={tagsSelected.length === 0}
+            isactive={tagsSelected.length === 0}
             onClick={()=> handleTagSelected("all")}
            />
         </li>
@@ -106,7 +106,7 @@ export function Home() {
                 <ButtonText 
                   title={tag.name}
                   onClick={()=> handleTagSelected(tag.name)}
-                  isActive={tagsSelected.includes(tag.name)}
+                  isactive={tagsSelected.includes(tag.name)}
                 />
               </li>
             );

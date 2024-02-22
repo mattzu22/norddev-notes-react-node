@@ -8,14 +8,14 @@ import { Container } from "./styles"
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>{
   title: string;
-  isActive?: boolean;
+  isactive?: number | boolean;
 }
 
-export function ButtonText({ title, isActive = false, ...rest }: ButtonProps) {
+export function ButtonText({ title, isactive = false, ...rest }: ButtonProps) {
   return (
     <Container  
       type="button" 
-      isActive={isActive}
+      isactive={isactive ? 1 : 0}
       {...rest} 
     >
         {title}
