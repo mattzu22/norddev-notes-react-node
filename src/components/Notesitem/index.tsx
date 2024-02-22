@@ -10,8 +10,10 @@ interface NotesProps extends InputHTMLAttributes<HTMLInputElement>{
 }
 
 export function NotesItem({ isnew = false, value, onClick, ...rest }: NotesProps) {
+
+
   return (
-    <Container isnew={isnew}>
+    <Container isnew={isnew.toString()}>
         <input 
             type="text" 
             value={value}

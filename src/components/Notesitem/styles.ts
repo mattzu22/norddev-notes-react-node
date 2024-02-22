@@ -9,17 +9,17 @@
 import styled from "styled-components";
 
 interface ContainerProps {
-    isnew?: boolean
+    isnew?: string
 }
 
 export const Container = styled.div<ContainerProps>`
     display: flex;
     align-items: center;
 
-    background-color: ${({theme, isnew}) => isnew ? "transparent" : theme.COLORS.BACKGROUND_900};
+    background-color: ${({theme, isnew}) => isnew === "true" ? "transparent" : theme.COLORS.BACKGROUND_900};
     color: ${({theme}) => theme.COLORS.GRAY_300};
 
-    border: ${({theme, isnew}) => isnew ? `1px dashed ${theme.COLORS.GRAY_300}` : "none"};
+    border: ${({theme, isnew}) => isnew === "true" ? `1px dashed ${theme.COLORS.GRAY_300}` : "none"};
 
     margin-bottom: 8px;
     border-radius: 10px;
