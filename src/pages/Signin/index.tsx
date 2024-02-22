@@ -30,7 +30,7 @@ export function SignIn() {
   const { signIn, message, status } = useAuth() as SigninInProps;
 
   async function handleSignIn() {
-    signIn({ email, password });
+    await signIn({ email, password });
   }
 
   return (
