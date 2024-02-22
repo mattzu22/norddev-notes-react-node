@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, InputHTMLAttributes } from "react";
+import { InputHTMLAttributes } from "react";
 import { Container } from "./styles";
 
 import { FiPlus, FiX } from "react-icons/fi"

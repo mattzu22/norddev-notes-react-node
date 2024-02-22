@@ -6,7 +6,11 @@
 
 import styled from "styled-components";
 
-export const Container = styled.button`
+interface ContainerProps {
+   isActive?: boolean;
+ }
+
+export const Container = styled.button<ContainerProps>`
    background: none;
    color: ${({theme, isActive}) => (isActive ? theme.COLORS.ORANGE : theme.COLORS.GRAY_100)};
 
