@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/auth";
 import { useState } from "react";
 
-import { Container, Form, Background } from "./styles";
+import * as S from "./styles";
 
 import { FiMail, FiLock } from "react-icons/fi";
 
@@ -34,10 +34,10 @@ export function SignIn() {
   }
 
   return (
-    <Container>
+    <S.Container>
       {message && <PopUp message={message} status={status} />}
 
-      <Form>
+      <S.Form>
         <h1>NordDev Notes</h1>
         <p>Aplicações para salvar e gerenciar seus links úteis</p>
 
@@ -59,9 +59,9 @@ export function SignIn() {
         <Button text="Entrar" type="button" onClick={handleSignIn} />
 
         <Link to="/register">Criar conta</Link>
-      </Form>
+      </S.Form>
 
-      <Background />
-    </Container>
+      <S.Background />
+    </S.Container>
   );
 }
