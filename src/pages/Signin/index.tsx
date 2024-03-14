@@ -17,7 +17,7 @@ interface SigninProps {
   password: string;
 }
 
-interface AuthProps {
+interface SigninInProps {
   signIn: ({ email, password }: SigninProps) => Promise<void>;
   message: string;
   status: number;
@@ -27,7 +27,7 @@ export function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { signIn, message, status } = useAuth() as AuthProps;
+  const { signIn, message, status } = useAuth() as SigninInProps;
 
   async function handleSignIn() {
     await signIn({ email, password });
