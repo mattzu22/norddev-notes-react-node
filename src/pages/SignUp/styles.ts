@@ -1,8 +1,3 @@
- 
-
-
-
-
 import styled from "styled-components";
 
 import backgroundImg from "../../assets/devs.png"
